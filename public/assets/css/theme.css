@@ -1,0 +1,516 @@
+/* ==========================================================================
+   LSW Cars – Theme „Black & Gold" (überschreibt style.css)
+   ========================================================================== */
+
+:root {
+  --c-bg:        #0a0a0a;
+  --c-bg-alt:    #0f0f0f;
+  --c-surface:   #161616;
+  --c-surface-2: #1d1d1d;
+  --c-border:    #2a2a2a;
+  --c-border-2:  #3a2f1f;
+  --c-text:      #f1ead7;
+  --c-text-mute: #9a9285;
+  --c-text-inv:  #0a0a0a;
+
+  --c-gold:      #c9a24a;
+  --c-gold-2:    #e6c878;
+  --c-gold-d:    #8a6f2c;
+  --c-primary:   var(--c-gold);
+  --c-primary-d: var(--c-gold-d);
+  --c-accent:    #0a0a0a;
+
+  --shadow-gold: 0 12px 32px -10px rgba(201, 162, 74, 0.35);
+  --shadow-dark: 0 24px 60px -22px rgba(0, 0, 0, 0.85);
+}
+
+/* ===== Grundlayout ======================================================= */
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  background-image:
+    radial-gradient(1200px 600px at 100% 0%, rgba(201, 162, 74, 0.035), transparent 60%),
+    radial-gradient(1000px 700px at 0% 100%, rgba(255, 255, 255, 0.02), transparent 70%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 { color: var(--c-text); }
+p { color: var(--c-text-mute); }
+a:hover { color: var(--c-gold-2); }
+
+/* Goldener Akzent unter den Section-Headlines */
+.section-head .eyebrow {
+  color: var(--c-gold-2);
+  letter-spacing: .25em;
+}
+.section-head h2 {
+  position: relative;
+  display: inline-block;
+  padding-bottom: .4em;
+}
+.section-head h2::after {
+  content: '';
+  position: absolute; left: 50%; bottom: 0;
+  transform: translateX(-50%);
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+}
+
+/* ===== Buttons =========================================================== */
+.btn-primary {
+  background: linear-gradient(180deg, var(--c-gold-2), var(--c-gold));
+  color: #1a1408;
+  border: 1px solid var(--c-gold-d);
+  box-shadow: var(--shadow-gold);
+  text-shadow: none;
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, var(--c-gold), var(--c-gold-d));
+  color: #1a1408;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--c-text);
+  border: 1px solid var(--c-border);
+}
+.btn-ghost:hover {
+  background: rgba(201, 162, 74, .1);
+  border-color: var(--c-gold);
+  color: var(--c-gold-2);
+}
+.btn-dark {
+  background: #000;
+  color: var(--c-gold-2);
+  border: 1px solid var(--c-gold-d);
+}
+.btn-dark:hover {
+  background: var(--c-gold);
+  color: #1a1408;
+}
+
+/* ===== Header ============================================================ */
+.site-header {
+  background:
+    radial-gradient(800px 200px at 50% 0%, rgba(255, 255, 255, .035), transparent 70%),
+    linear-gradient(180deg, #141414 0%, #0a0a0a 100%);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 24px -20px rgba(0, 0, 0, .9);
+}
+.header-inner { padding: 1.25rem 0; }
+.nav-main a { color: var(--c-text); }
+.nav-main a::after { background: var(--c-gold); }
+.nav-main a.active,
+.nav-main a:hover { color: var(--c-gold-2); }
+.nav-toggle span { background: var(--c-gold-2); }
+.nav-main.is-open { background: #0a0a0a; border-color: var(--c-border-2); }
+
+/* ===== Markenlogo ======================================================== */
+.logo {
+  align-items: center;
+  gap: .75rem;
+  line-height: 0;
+}
+.logo-svg {
+  height: 90px;
+  width: auto;
+  display: block;
+  border-radius: 4px;
+  /* Subtiler Rahmen, damit die dunkle Logo-Textur als „Markenplakette"
+     wirkt und nicht als versehentlicher Kasten */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .04),
+    0 6px 18px -6px rgba(0, 0, 0, .8);
+}
+/* Login-Logo etwas größer */
+.login-card .logo-svg { height: 130px; margin: 0 auto 1rem; }
+.admin-sidebar .logo-svg { height: 72px; }
+
+.logo-text-fallback { display: none; }
+
+/* ===== Hero ============================================================= */
+.hero {
+  background:
+    radial-gradient(900px 500px at 80% 20%, rgba(201, 162, 74, .08), transparent 65%),
+    radial-gradient(700px 400px at 10% 90%, rgba(255, 255, 255, .03), transparent 70%),
+    linear-gradient(180deg, #0a0a0a 0%, #0e0e0e 60%, #0a0a0a 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+.hero::before { content: none; }
+.hero h1 { color: #fff; }
+.hero h1 em { color: var(--c-gold-2); font-style: normal; }
+.hero p.lead { color: rgba(255,255,255,.8); }
+.hero-eyebrow {
+  background: rgba(201, 162, 74, .1);
+  border: 1px solid rgba(201, 162, 74, .35);
+  color: var(--c-gold-2);
+}
+.hero-eyebrow::before {
+  background: var(--c-gold-2);
+  box-shadow: 0 0 0 4px rgba(201, 162, 74, .25);
+}
+.hero-stats { border-top-color: rgba(201, 162, 74, .25); }
+.hero-stats .stat strong { color: var(--c-gold-2); }
+.hero-stats .stat span { color: rgba(255,255,255,.6); }
+.hero-visual {
+  background: linear-gradient(135deg, #1a1408, #0a0a0a);
+  border: 1px solid var(--c-border-2);
+  box-shadow: var(--shadow-dark);
+  overflow: hidden;
+}
+.hero-visual img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== Schnellsuche ====================================================== */
+.search-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-2);
+  box-shadow: var(--shadow-dark);
+}
+.search-card label { color: var(--c-text-mute); }
+.search-card select,
+.search-card input {
+  background: #0b0b0b;
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.search-card select:focus,
+.search-card input:focus {
+  border-color: var(--c-gold);
+  background: #000;
+}
+
+/* ===== Section / alt ===================================================== */
+.section-alt { background: var(--c-bg-alt); }
+
+/* ===== Vehicle-Cards ===================================================== */
+.vehicle-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.vehicle-card:hover {
+  border-color: var(--c-gold);
+  box-shadow: var(--shadow-gold);
+}
+.vehicle-card .v-img {
+  background: linear-gradient(135deg, #1a1408, #0a0a0a);
+}
+.vehicle-card .v-img .badge {
+  background: var(--c-gold);
+  color: #1a1408;
+  text-shadow: none;
+  font-weight: 700;
+}
+.vehicle-card .v-img .badge-sold {
+  background: #1a1a1a; color: var(--c-gold-2);
+  border: 1px solid var(--c-gold-d);
+}
+.vehicle-body .brand { color: var(--c-gold-2); }
+.vehicle-body h3 { color: var(--c-text); }
+.vehicle-specs {
+  color: var(--c-text-mute);
+  border-bottom-color: var(--c-border);
+}
+.vehicle-specs svg { color: var(--c-gold); }
+.vehicle-price { color: var(--c-gold-2); }
+
+/* ===== Feature blocks ==================================================== */
+.feature {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+.feature:hover { border-color: var(--c-gold); box-shadow: var(--shadow-gold); }
+.feature .icon {
+  background: linear-gradient(135deg, rgba(201,162,74,.18), rgba(201,162,74,.05));
+  color: var(--c-gold-2);
+  border: 1px solid rgba(201,162,74,.35);
+}
+
+/* ===== Filter / Result =================================================== */
+.filter-bar {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+.filter-bar label { color: var(--c-text-mute); }
+.filter-bar select,
+.filter-bar input {
+  background: #0b0b0b;
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.filter-bar select:focus,
+.filter-bar input:focus { border-color: var(--c-gold); background: #000; }
+.result-meta { color: var(--c-text-mute); }
+.result-meta select { background: var(--c-surface)!important; color: var(--c-text); border-color: var(--c-border)!important; }
+.empty-state {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text-mute);
+}
+
+/* ===== Detailseite ======================================================= */
+.gallery-main {
+  background: linear-gradient(135deg, #1a1408, #0a0a0a);
+  border: 1px solid var(--c-border-2);
+}
+.gallery-thumbs button { background: var(--c-surface); border-color: var(--c-border); }
+.gallery-thumbs button.active { border-color: var(--c-gold); }
+
+.detail-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-2);
+  box-shadow: var(--shadow-dark);
+}
+.detail-card .brand-tag { color: var(--c-gold-2); }
+.detail-card h1 { color: var(--c-text); }
+.detail-price { color: var(--c-gold-2); }
+.detail-card hr { border-top-color: var(--c-border); }
+
+.specs-table {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+.specs-table th, .specs-table td {
+  border-bottom-color: var(--c-border);
+  color: var(--c-text);
+}
+.specs-table th {
+  background: var(--c-surface-2);
+  color: var(--c-gold-2);
+}
+.equip-grid li::before {
+  background: rgba(201,162,74,.15);
+  color: var(--c-gold-2);
+}
+
+/* ===== Formulare ========================================================= */
+.form-stack label { color: var(--c-text); }
+.form-stack input,
+.form-stack textarea,
+.form-stack select {
+  background: #0b0b0b;
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.form-stack input:focus,
+.form-stack textarea:focus,
+.form-stack select:focus {
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 4px rgba(201, 162, 74, .15);
+}
+.checkbox-row { color: var(--c-text-mute); }
+
+.alert-success { background: rgba(46, 204, 113, .12); color: #b6e7c9; border-color: rgba(46, 204, 113, .3); }
+.alert-error   { background: rgba(215, 38, 49, .12); color: #f7a8ad; border-color: rgba(215, 38, 49, .3); }
+.alert-info    { background: rgba(201, 162, 74, .1); color: var(--c-gold-2); border-color: rgba(201, 162, 74, .3); }
+
+/* ===== Static / legal pages ============================================== */
+.page-header {
+  background:
+    radial-gradient(800px 300px at 50% 0%, rgba(201, 162, 74, .04), transparent 70%),
+    linear-gradient(180deg, #0e0e0e, transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.prose p, .prose ul, .prose ol, .prose li { color: var(--c-text); }
+.prose code { background: var(--c-surface-2); color: var(--c-gold-2); padding: .15em .4em; border-radius: 4px; }
+
+/* ===== Footer ============================================================ */
+.site-footer {
+  background:
+    radial-gradient(800px 200px at 50% 100%, rgba(255, 255, 255, .03), transparent 70%),
+    linear-gradient(0deg, #141414 0%, #0a0a0a 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(241, 234, 215, .75);
+}
+.site-footer h4 { color: var(--c-gold-2); letter-spacing: .15em; text-transform: uppercase; font-size: .85rem; }
+.site-footer a { color: rgba(241, 234, 215, .75); }
+.site-footer a:hover { color: var(--c-gold-2); }
+.footer-tag { color: rgba(241, 234, 215, .55); }
+.footer-bar { border-top: 1px solid var(--c-border-2); }
+.footer-bar-inner { color: rgba(241, 234, 215, .45); }
+
+/* ===== Cookie-Banner ===================================================== */
+.cookie-banner {
+  background: #141008;
+  border: 1px solid var(--c-border-2);
+  color: var(--c-text);
+  box-shadow: var(--shadow-dark);
+}
+.cookie-text h3 { color: var(--c-gold-2); }
+.cookie-text p  { color: var(--c-text-mute); }
+.cookie-text a  { color: var(--c-gold-2); }
+
+/* ===== Admin Theme ====================================================== */
+.admin-shell { background: #0a0a0a; }
+.admin-sidebar {
+  background: #050505;
+  border-right: 1px solid var(--c-border-2);
+}
+.admin-sidebar a { color: rgba(241, 234, 215, .75); }
+.admin-sidebar .admin-nav a.active {
+  background: var(--c-gold);
+  color: #1a1408;
+}
+.admin-main { color: var(--c-text); }
+.admin-header h1 { color: var(--c-text); }
+.kpi { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text); }
+.kpi small { color: var(--c-text-mute); }
+.kpi strong { color: var(--c-gold-2); }
+.data-table {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.data-table th { background: var(--c-surface-2); color: var(--c-gold-2); }
+.data-table td { border-bottom-color: var(--c-border); }
+.tag-grey { background: var(--c-surface-2); color: var(--c-text-mute); }
+.tag-green { background: rgba(46, 204, 113, .15); color: #7ed99b; }
+.tag-red { background: rgba(215, 38, 49, .15); color: #f7a8ad; }
+.login-shell {
+  background:
+    radial-gradient(800px 400px at 50% 0%, rgba(201, 162, 74, .25), transparent 60%),
+    linear-gradient(135deg, #0a0a0a, #141008);
+}
+.login-card { background: var(--c-surface); border: 1px solid var(--c-border-2); color: var(--c-text); }
+.login-card label { color: var(--c-text); }
+.login-card code { color: var(--c-gold-2); background: var(--c-surface-2); padding: .1em .35em; border-radius: 4px; }
+
+/* ===== Goldener Trenner (decoratives Element) ============================ */
+.gold-divider {
+  display: flex; align-items: center; gap: 1rem;
+  margin: 1rem 0;
+}
+.gold-divider::before,
+.gold-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+}
+.gold-divider span {
+  color: var(--c-gold-2);
+  font-size: .8rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+}
+
+/* ===== WhatsApp Floating Action Button =================================== */
+.whatsapp-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .85rem 1.25rem .85rem 1rem;
+  background: #25D366;
+  color: #fff;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  box-shadow:
+    0 10px 28px -8px rgba(37, 211, 102, .55),
+    0 4px 10px -4px rgba(0, 0, 0, .35);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, bottom .3s ease;
+  isolation: isolate;
+}
+.whatsapp-fab:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: #1fbf5a;
+  color: #fff;
+  box-shadow:
+    0 14px 32px -8px rgba(37, 211, 102, .75),
+    0 6px 12px -4px rgba(0, 0, 0, .45);
+}
+.whatsapp-fab svg { flex-shrink: 0; }
+
+/* Pulsierender „Heartbeat" als Aufmerksamkeitssignal */
+.whatsapp-fab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #25D366;
+  z-index: -1;
+  animation: wa-pulse 2.4s ease-out infinite;
+}
+@keyframes wa-pulse {
+  0%   { transform: scale(1);   opacity: .55; }
+  70%  { transform: scale(1.45); opacity: 0; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+
+/* Bei sichtbarem Cookie-Banner Button nach oben rücken,
+   damit er nicht vom Banner verdeckt wird */
+body.cookie-banner-open .whatsapp-fab { bottom: 9rem; }
+
+/* Mobile: nur das Icon zeigen */
+@media (max-width: 600px) {
+  .whatsapp-fab {
+    padding: 1rem;
+    right: 1rem; bottom: 1rem;
+    width: 56px; height: 56px;
+    justify-content: center;
+  }
+  .whatsapp-fab-text { display: none; }
+  body.cookie-banner-open .whatsapp-fab { bottom: 11rem; }
+}
+
+/* Reduzierte Animationen respektieren */
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-fab::before { animation: none; }
+  .whatsapp-fab { transition: none; }
+}
+
+/* ===== Service-Karten (Dienstleistung) =================================== */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.service-card {
+  background:
+    linear-gradient(180deg, rgba(201,162,74,.04), transparent 50%),
+    var(--c-surface);
+  border: 1px solid var(--c-border-2);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-gold);
+  box-shadow: var(--shadow-gold);
+}
+.service-card .icon-circle {
+  width: 80px; height: 80px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(230,200,120,.25), transparent 60%),
+    linear-gradient(135deg, rgba(201,162,74,.18), rgba(201,162,74,.05));
+  border: 1px solid rgba(201,162,74,.35);
+  display: grid; place-items: center;
+  color: var(--c-gold-2);
+}
+.service-card h3 { color: var(--c-text); margin-bottom: .5rem; }
+.service-card .price-tag {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--c-gold-2);
+}
+.service-card .price-tag small {
+  font-size: .7em; color: var(--c-text-mute); font-weight: 500;
+}
