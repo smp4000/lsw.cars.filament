@@ -50,6 +50,8 @@ class Vehicle extends Model
         'anhaengerkupplung' => 'boolean',
         'ledersitze'        => 'boolean',
         'schiebedach'       => 'boolean',
+        'ausstattung_serie' => 'array',
+        'ausstattung_sonder' => 'array',
         'verfuegbar'        => 'boolean',
         'verkauft'          => 'boolean',
     ];
@@ -90,6 +92,8 @@ class Vehicle extends Model
 
     public function ausstattungsListe(): array
     {
+        $out = [];
+
         $map = [
             'klimaanlage'       => 'Klimaanlage',
             'navigation'        => 'Navigationssystem',
@@ -100,10 +104,17 @@ class Vehicle extends Model
             'ledersitze'        => 'Ledersitze',
             'schiebedach'       => 'Schiebedach',
         ];
-        $out = [];
         foreach ($map as $key => $label) {
             if ($this->{$key}) $out[] = $label;
         }
+
+        foreach ($this->ausstattung_sonder ?? [] as $item) {
+            $label = $item['description'] ?? null;
+            if ($label && ! in_array($label, $out)) {
+                $out[] = $label;
+            }
+        }
+
         return $out;
     }
 }

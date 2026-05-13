@@ -47,6 +47,7 @@
       <h2 style="margin-top:2.5rem;">Fahrzeugdaten</h2>
       <table class="specs-table">
         <tr><th>Marke / Modell</th><td>{{ $vehicle->marke }} {{ $vehicle->modell }}</td></tr>
+        @if($vehicle->fahrgestellnummer)<tr><th>Fahrgestellnr.</th><td>{{ $vehicle->fahrgestellnummer }}</td></tr>@endif
         <tr><th>Erstzulassung</th><td>{{ $vehicle->erstzulassung_formatiert }}</td></tr>
         <tr><th>Kilometerstand</th><td>{{ $vehicle->km_formatiert }}</td></tr>
         <tr><th>Kraftstoff</th><td>{{ $vehicle->kraftstoff ?: '–' }}</td></tr>
