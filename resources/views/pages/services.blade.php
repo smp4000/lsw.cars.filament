@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('page', 'leistungen')
 @section('title', 'Leistungen')
+@section('meta_description', 'Unsere Leistungen: Fahrzeugverkauf, Ankauf, Finanzierung und Inzahlungnahme bei '.$company['name'].' in '.$company['city'].'.')
 
 @section('content')
 

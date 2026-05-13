@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('page', 'ueber')
 @section('title', 'Über uns')
+@section('meta_description', 'Lernen Sie '.$company['name'].' kennen – Ihr Autohaus in '.$company['city'].'. Persönliche Beratung, langjährige Erfahrung und Leidenschaft für Automobile.')
 
 @section('content')
 

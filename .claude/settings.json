@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(cd C:\\xampp\\htdocs\\lsw.cars*)",
+      "PowerShell(php artisan *)",
+      "PowerShell(composer *)",
+      "PowerShell(Remove-Item C:\\xampp\\htdocs\\lsw.cars\\_check*)",
+      "PowerShell(New-Item *)",
+      "PowerShell(ls *)",
+      "PowerShell(Get-Content *)",
+      "Bash(cd *)"
+    ]
+  }
+}

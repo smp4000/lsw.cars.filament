@@ -702,3 +702,10 @@ p  { margin: 0 0 1em; color: var(--c-text-mute); }
 .mt-1 { margin-top: .5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; }
 .flex { display: flex; gap: 1rem; }
 .gap-sm { gap: .5rem; }
+
+/* ===== Breadcrumbs ======================================================= */
+.breadcrumbs ol { display:flex; list-style:none; padding:0; margin:0; gap:.4rem; font-size:.85rem; flex-wrap:wrap; }
+.breadcrumbs li:not(:last-child)::after { content:"›"; margin-left:.4rem; color:var(--c-text-mute); }
+.breadcrumbs a { color:var(--c-text-mute); text-decoration:none; }
+.breadcrumbs a:hover { color:var(--c-primary); text-decoration:underline; }
+.breadcrumbs span[aria-current] { color:var(--c-text); }

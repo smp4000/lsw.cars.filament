@@ -1,8 +1,16 @@
 @extends('layouts.app')
 @section('page', 'fahrzeuge')
 @section('title', 'Fahrzeuge')
+@section('meta_description', 'Gebrauchtwagen kaufen bei '.$company['name'].' in '.$company['city'].'. Aktuelle Fahrzeuge aller Marken – fair, geprüft und sofort verfügbar.')
 
 @section('content')
+
+<div class="container" style="padding-top:1rem;">
+  <x-breadcrumbs :items="[
+      ['label' => 'Start', 'url' => route('home')],
+      ['label' => 'Fahrzeuge'],
+  ]" />
+</div>
 
 <header class="page-header">
   <div class="container">

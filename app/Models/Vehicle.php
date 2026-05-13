@@ -5,12 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Vehicle extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Vehicle $vehicle) {
+            if (! $vehicle->slug || $vehicle->isDirty('titel')) {
+                $base = Str::slug($vehicle->titel);
+                $slug = $base;
+                $i = 2;
+                while (static::where('slug', $slug)->where('id', '!=', $vehicle->id ?? 0)->exists()) {
+                    $slug = $base . '-' . $i++;
+                }
+                $vehicle->slug = $slug;
+            }
+        });
+    }
 
     protected $casts = [
         'preis'             => 'decimal:2',

@@ -1,27 +1,40 @@
 @extends('layouts.app')
 @section('page', 'fahrzeuge')
 @section('title', $vehicle->titel)
+@section('meta_description', $vehicle->titel.' – '.$vehicle->preis_formatiert.', '.$vehicle->km_formatiert.', EZ '.$vehicle->erstzulassung_formatiert.', '.$vehicle->kraftstoff.'. Jetzt bei '.$company['name'].' anfragen.')
+@section('canonical', route('vehicles.show', $vehicle))
+@section('og_type', 'product')
+@section('og_image', $vehicle->firstImageUrl() ?: asset('assets/images/logo.png'))
+@section('twitter_card', 'summary_large_image')
+
+@push('seo')
+@include('partials.jsonld-vehicle')
+@endpush
 
 @section('content')
 
 @php $images = $vehicle->images; @endphp
 
 <div class="container section" style="padding-top:2rem;">
-  <a href="{{ route('vehicles.index') }}" style="color:var(--c-text-mute);font-size:.9rem;">← Zurück zur Übersicht</a>
+  <x-breadcrumbs :items="[
+      ['label' => 'Start', 'url' => route('home')],
+      ['label' => 'Fahrzeuge', 'url' => route('vehicles.index')],
+      ['label' => $vehicle->titel],
+  ]" />
 
   <div class="detail-grid">
     <div>
       <div class="gallery">
         <div class="gallery-main">
           @if($images->count())
-            <img src="{{ $images->first()->url }}" alt="{{ $vehicle->titel }}">
+            <img src="{{ $images->first()->url }}" alt="{{ $vehicle->titel }} – {{ $vehicle->marke }} {{ $vehicle->modell }}">
           @endif
         </div>
         @if($images->count() > 1)
           <div class="gallery-thumbs">
             @foreach($images as $i => $img)
               <button type="button" class="{{ $i===0 ? 'active' : '' }}">
-                <img src="{{ $img->url }}" alt="">
+                <img src="{{ $img->url }}" alt="{{ $vehicle->titel }} – Bild {{ $i + 1 }}">
               </button>
             @endforeach
           </div>

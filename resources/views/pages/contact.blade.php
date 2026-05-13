@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('page', 'kontakt')
 @section('title', 'Kontakt')
+@section('meta_description', 'Kontaktieren Sie '.$company['name'].' in '.$company['city'].'. Telefon: '.$company['phone'].'. Wir beraten Sie gerne zu unseren Fahrzeugen.')
+
+@push('seo')
+@include('partials.jsonld-autodealer')
+@endpush
 
 @section('content')
 

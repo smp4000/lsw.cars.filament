@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('page', 'home')
 @section('title', 'Startseite')
+@section('meta_description', $company['name'].' – Ihr Autohaus in '.$company['city'].'. Premium-Gebrauchtwagen zu fairen Preisen. Persönliche Beratung, Probefahrt und Finanzierung.')
+
+@push('seo')
+@include('partials.jsonld-autodealer')
+@endpush
 
 @section('content')
 
