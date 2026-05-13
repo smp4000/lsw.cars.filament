@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -34,29 +35,52 @@ class Vehicle extends Model
     }
 
     protected $casts = [
-        'preis'             => 'decimal:2',
-        'kilometerstand'    => 'integer',
-        'leistung_kw'       => 'integer',
-        'leistung_ps'       => 'integer',
-        'hubraum'           => 'integer',
-        'tueren'            => 'integer',
-        'sitze'             => 'integer',
-        'anzahl_halter'     => 'integer',
-        'klimaanlage'       => 'boolean',
-        'navigation'        => 'boolean',
-        'sitzheizung'       => 'boolean',
-        'einparkhilfe'      => 'boolean',
-        'tempomat'          => 'boolean',
-        'anhaengerkupplung' => 'boolean',
-        'ledersitze'        => 'boolean',
-        'schiebedach'       => 'boolean',
-        'verfuegbar'        => 'boolean',
-        'verkauft'          => 'boolean',
+        'preis'                  => 'decimal:2',
+        'kilometerstand'         => 'integer',
+        'leistung_kw'            => 'integer',
+        'leistung_ps'            => 'integer',
+        'hubraum'                => 'integer',
+        'zylinder'               => 'integer',
+        'tankgroesse'            => 'integer',
+        'energieverbrauch'       => 'decimal:1',
+        'verbrauch_innerorts'    => 'decimal:1',
+        'verbrauch_ausserorts'   => 'decimal:1',
+        'co2_emissionen'         => 'decimal:1',
+        'energiekosten'          => 'decimal:2',
+        'tueren'                 => 'integer',
+        'sitze'                  => 'integer',
+        'anzahl_halter'          => 'integer',
+        'anhaengelast_gebremst'  => 'integer',
+        'anhaengelast_ungebremst'=> 'integer',
+        'gewicht'                => 'integer',
+        'letzte_wartung_km'      => 'integer',
+        'klimaanlage'            => 'boolean',
+        'navigation'             => 'boolean',
+        'sitzheizung'            => 'boolean',
+        'einparkhilfe'           => 'boolean',
+        'tempomat'               => 'boolean',
+        'anhaengerkupplung'      => 'boolean',
+        'ledersitze'             => 'boolean',
+        'schiebedach'            => 'boolean',
+        'schiebetuer'            => 'boolean',
+        'metallic'               => 'boolean',
+        'nichtraucher'           => 'boolean',
+        'scheckheftgepflegt'     => 'boolean',
+        'verkehrstauglich'       => 'boolean',
+        'unfallschaden'          => 'boolean',
+        'verfuegbar'             => 'boolean',
+        'verkauft'               => 'boolean',
+        'unfallfrei'             => 'boolean',
     ];
 
     public function images(): HasMany
     {
         return $this->hasMany(VehicleImage::class)->orderBy('sortierung')->orderBy('id');
+    }
+
+    public function equipment(): BelongsToMany
+    {
+        return $this->belongsToMany(EquipmentItem::class, 'vehicle_equipment');
     }
 
     public function messages(): HasMany
@@ -90,21 +114,9 @@ class Vehicle extends Model
 
     public function ausstattungsListe(): array
     {
-        $out = [];
-
-        $map = [
-            'klimaanlage'       => 'Klimaanlage',
-            'navigation'        => 'Navigationssystem',
-            'sitzheizung'       => 'Sitzheizung',
-            'einparkhilfe'      => 'Einparkhilfe',
-            'tempomat'          => 'Tempomat',
-            'anhaengerkupplung' => 'Anhängerkupplung',
-            'ledersitze'        => 'Ledersitze',
-            'schiebedach'       => 'Schiebedach',
-        ];
-        foreach ($map as $key => $label) {
-            if ($this->{$key}) $out[] = $label;
-        }
+        $out = $this->equipment()->with('category')->get()
+            ->pluck('name')
+            ->toArray();
 
         foreach (explode("\n", $this->ausstattung_sonder ?? '') as $line) {
             $line = trim($line);
@@ -116,5 +128,13 @@ class Vehicle extends Model
         }
 
         return $out;
+    }
+
+    public function ausstattungsListeGruppiert(): array
+    {
+        return $this->equipment()->with('category')->get()
+            ->groupBy(fn ($item) => $item->category->name)
+            ->map(fn ($items) => $items->pluck('name')->toArray())
+            ->toArray();
     }
 }

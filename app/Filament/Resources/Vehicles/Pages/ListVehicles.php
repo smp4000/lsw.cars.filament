@@ -5,12 +5,14 @@ namespace App\Filament\Resources\Vehicles\Pages;
 use App\Filament\Resources\Vehicles\VehicleResource;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
+use App\Services\EquipmentSync;
 use App\Services\MobileDeParser;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 class ListVehicles extends ListRecords
@@ -36,12 +38,18 @@ class ListVehicles extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    $zipPath = storage_path('app/private/' . $data['zip_file']);
+                    $relativePath = $data['zip_file'];
+                    $disk = Storage::disk('local');
 
-                    if (! file_exists($zipPath)) {
-                        Notification::make()->title('ZIP-Datei nicht gefunden')->danger()->send();
+                    if (! $disk->exists($relativePath)) {
+                        Notification::make()
+                            ->title('ZIP-Datei nicht gefunden')
+                            ->body('Pfad: ' . $relativePath)
+                            ->danger()->send();
                         return;
                     }
+
+                    $zipPath = $disk->path($relativePath);
 
                     $zip = new ZipArchive();
                     if ($zip->open($zipPath) !== true) {
@@ -74,7 +82,8 @@ class ListVehicles extends ListRecords
 
                     foreach ($ads as $ad) {
                         $imageUrls = $ad['images'] ?? [];
-                        unset($ad['images']);
+                        $equipmentNames = $ad['equipment_names'] ?? [];
+                        unset($ad['images'], $ad['equipment_names']);
 
                         $mobileAdId = $ad['mobile_ad_id'];
 
@@ -90,11 +99,14 @@ class ListVehicles extends ListRecords
                             $created++;
                         }
 
+                        EquipmentSync::syncFromImport($vehicle, $equipmentNames);
+
                         if (! empty($imageUrls) && $vehicle->images()->count() === 0) {
                             $jpgFiles = glob($tmpDir . '/' . $mobileAdId . '_*.jpg');
 
                             if (! empty($jpgFiles)) {
-                                sort($jpgFiles);
+                                natsort($jpgFiles);
+                                $jpgFiles = array_values($jpgFiles);
                                 $disk = \Illuminate\Support\Facades\Storage::disk('public');
 
                                 foreach ($jpgFiles as $i => $jpg) {
@@ -122,7 +134,7 @@ class ListVehicles extends ListRecords
                     }
 
                     $this->cleanupDir($tmpDir);
-                    @unlink($zipPath);
+                    $disk->delete($relativePath);
 
                     Notification::make()
                         ->title('mobile.de Import abgeschlossen')
