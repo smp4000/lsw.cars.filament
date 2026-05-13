@@ -6,7 +6,6 @@ use App\Services\DatVxsParser;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -180,41 +179,24 @@ class VehicleForm
                     ]),
 
                 Section::make('Sonderausstattung (DAT)')
-                    ->description('Wird automatisch durch den DAT-Import befüllt. Einträge können manuell hinzugefügt oder entfernt werden.')
+                    ->description('Wird automatisch durch den DAT-Import befüllt. Format: DAT-Nr Bezeichnung, eine Zeile pro Position.')
                     ->collapsed()
                     ->schema([
-                        Repeater::make('ausstattung_sonder')
+                        Textarea::make('ausstattung_sonder')
                             ->label('')
-                            ->schema([
-                                TextInput::make('description')
-                                    ->label('Bezeichnung')
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(1)
-                            ->addActionLabel('Ausstattung hinzufügen')
-                            ->collapsible()
-                            ->defaultItems(0)
-                            ->reorderable(false),
+                            ->rows(12)
+                            ->placeholder("15490 Außenspiegel mit Totwinkel-Assistent\n29500 Sitzheizung vorn\n25800 Parktronic-System PTS")
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Serienausstattung (DAT)')
                     ->description('Automatisch aus der DAT-Datei. Wird normalerweise nicht manuell geändert.')
                     ->collapsed()
                     ->schema([
-                        Repeater::make('ausstattung_serie')
+                        Textarea::make('ausstattung_serie')
                             ->label('')
-                            ->schema([
-                                TextInput::make('description')
-                                    ->label('Bezeichnung')
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(1)
-                            ->addActionLabel('Serienausstattung hinzufügen')
-                            ->collapsible()
-                            ->defaultItems(0)
-                            ->reorderable(false),
+                            ->rows(12)
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Sichtbarkeit & Status')

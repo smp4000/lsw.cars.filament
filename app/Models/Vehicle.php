@@ -50,8 +50,6 @@ class Vehicle extends Model
         'anhaengerkupplung' => 'boolean',
         'ledersitze'        => 'boolean',
         'schiebedach'       => 'boolean',
-        'ausstattung_serie' => 'array',
-        'ausstattung_sonder' => 'array',
         'verfuegbar'        => 'boolean',
         'verkauft'          => 'boolean',
     ];
@@ -108,8 +106,10 @@ class Vehicle extends Model
             if ($this->{$key}) $out[] = $label;
         }
 
-        foreach ($this->ausstattung_sonder ?? [] as $item) {
-            $label = $item['description'] ?? null;
+        foreach (explode("\n", $this->ausstattung_sonder ?? '') as $line) {
+            $line = trim($line);
+            if (! $line) continue;
+            $label = preg_replace('/^\d+\s+/', '', $line);
             if ($label && ! in_array($label, $out)) {
                 $out[] = $label;
             }

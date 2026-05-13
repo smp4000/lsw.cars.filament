@@ -40,12 +40,12 @@ class DatVxsParser
         $hubraum = null;
         $getriebe = null;
 
-        $serieItems = self::parseEquipmentList($equipment->SeriesEquipment, $ns);
-        $sonderItems = self::parseEquipmentList($equipment->SpecialEquipment, $ns);
+        $serieRaw = self::parseEquipmentRaw($equipment->SeriesEquipment, $ns);
+        $sonderRaw = self::parseEquipmentRaw($equipment->SpecialEquipment, $ns);
 
         $allDescriptions = array_merge(
-            array_column($serieItems, 'description'),
-            array_column($sonderItems, 'description'),
+            array_column($serieRaw, 'description'),
+            array_column($sonderRaw, 'description'),
         );
 
         foreach ($allDescriptions as $desc) {
@@ -113,12 +113,12 @@ class DatVxsParser
             'karosserie'        => $karosserie,
             'zustand'           => 'Gebraucht',
             ...$booleans,
-            'ausstattung_serie'  => $serieItems,
-            'ausstattung_sonder' => $sonderItems,
+            'ausstattung_serie'  => self::formatEquipmentText($serieRaw),
+            'ausstattung_sonder' => self::formatEquipmentText($sonderRaw),
         ];
     }
 
-    private static function parseEquipmentList(?SimpleXMLElement $list, string $ns): array
+    private static function parseEquipmentRaw(?SimpleXMLElement $list, string $ns): array
     {
         if (! $list) return [];
 
@@ -126,20 +126,20 @@ class DatVxsParser
         foreach ($list->children($ns) as $pos) {
             $id = (string) $pos->DatEquipmentId;
             $desc = (string) $pos->Description;
-            $group = (string) $pos->EquipmentGroup;
-            $auto = (string) $pos->AddedByLogikCheck === 'true';
-
             if (! $desc) continue;
-
-            $items[] = array_filter([
-                'dat_id'      => $id,
-                'description' => $desc,
-                'group'       => $group ?: null,
-                'auto'        => $auto ?: null,
-            ], fn($v) => $v !== null);
+            $items[] = ['dat_id' => $id, 'description' => $desc];
         }
 
         return $items;
+    }
+
+    private static function formatEquipmentText(array $items): string
+    {
+        $lines = [];
+        foreach ($items as $item) {
+            $lines[] = $item['dat_id'] . ' ' . $item['description'];
+        }
+        return implode("\n", $lines);
     }
 
     private static function detectKarosserie(string $baseModel, string $subModel, array $descriptions): ?string
