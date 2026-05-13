@@ -14,7 +14,6 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class VehicleForm
 {
@@ -34,11 +33,14 @@ class VehicleForm
                             ->visibility('private')
                             ->maxSize(2048)
                             ->reactive()
-                            ->afterStateUpdated(function (Set $set, ?TemporaryUploadedFile $state) {
+                            ->afterStateUpdated(function (Set $set, $state) {
                                 if (! $state) return;
 
                                 try {
-                                    $xml = file_get_contents($state->getRealPath());
+                                    $path = is_string($state)
+                                        ? storage_path('app/private/' . $state)
+                                        : $state->getRealPath();
+                                    $xml = file_get_contents($path);
                                     $data = DatVxsParser::parse($xml);
 
                                     $set('fahrgestellnummer', $data['fahrgestellnummer'] ?? null);
